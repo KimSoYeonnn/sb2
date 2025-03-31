@@ -1,5 +1,7 @@
 package org.zerock.sb2.todo;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +93,20 @@ public class TodoRepoTests {
 
   }
 
+  @Test
+  public void testQuery1() {
 
+    Pageable pageable = PageRequest.of(0, 10, Sort.by("tno").descending());
+
+    repository.listofTitle("AAA", pageable);
+
+  }
+
+  @Test
+  public void testSelectDTO() {
+
+    log.info(repository.selectDTO(1L));
+
+  }
 
 }
