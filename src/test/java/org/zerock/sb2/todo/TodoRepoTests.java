@@ -2,7 +2,6 @@ package org.zerock.sb2.todo;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,8 +12,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
+import org.zerock.sb2.todo.entities.QTodo;
 import org.zerock.sb2.todo.entities.Todo;
 import org.zerock.sb2.todo.repository.TodoRepository;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.jpa.JPQLQuery;
+
 
 
 import lombok.extern.log4j.Log4j2;
@@ -27,6 +33,44 @@ public class TodoRepoTests {
   @Autowired(required = false)
   private TodoRepository repository;
 
+  @Autowired
+  private JPAQueryFactory queryFactory;
+
+  @Test
+  public void testSearch1() {
+
+    Pageable pageable = PageRequest.of(0, 10);
+
+    repository.list1(pageable);
+  }
+
+  @Test
+  public void testQuery() {
+
+    log.info(queryFactory);
+
+    QTodo todo = QTodo.todo;
+
+    JPQLQuery<Todo> query = queryFactory.selectFrom(todo);
+
+    query.where(todo.tno.gt(0L));
+    query.where(todo.title.like("AAA"));
+
+    query.orderBy(new OrderSpecifier<>(Order.DESC, todo.tno));
+
+    query.limit(10);
+    query.offset(5);
+
+    log.info(query);
+
+    java.util.List<Todo> entityList = query.fetch();
+
+    long count = query.fetchCount();
+
+    log.info(entityList);
+    log.info(count);
+
+  }
 
   //gradlew build -x test
   //@Disabled
