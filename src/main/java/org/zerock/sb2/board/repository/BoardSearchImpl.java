@@ -51,6 +51,10 @@ public class BoardSearchImpl implements BoardSearch {
         log.info(dtoList);
         log.info(count);        
 
-        return null;
+        return PageResponseDTO.<BoardListDTO>withAll()
+        .dtoList(dtoList)
+        .total((int)count)
+        .pageRequestDTO(pageRequestDTO)
+        .build();
     }
 }
