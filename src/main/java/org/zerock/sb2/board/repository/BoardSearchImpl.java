@@ -6,6 +6,7 @@ import org.zerock.sb2.board.dto.PageRequestDTO;
 import org.zerock.sb2.board.dto.PageResponseDTO;
 import org.zerock.sb2.board.entities.BoardEntity;
 import org.zerock.sb2.board.entities.QBoardEntity;
+import org.zerock.sb2.reply.entities.QReplyEntity;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
@@ -27,8 +28,11 @@ public class BoardSearchImpl implements BoardSearch {
   public PageResponseDTO<BoardListDTO> list(PageRequestDTO pageRequestDTO) {
     
     QBoardEntity board = QBoardEntity.boardEntity;
+    QReplyEntity reply = QReplyEntity.replyEntity;
 
     JPQLQuery<BoardEntity> query = queryFactory.selectFrom(board);
+    query.leftJoin(reply).on(reply.board.eq(board));
+
     query.where(board.bno.gt(0L));
     query.where(board.delFlag.eq(false));
 
@@ -53,7 +57,8 @@ public class BoardSearchImpl implements BoardSearch {
       query.where(builder);
 
     }//end if
-    
+
+    query.groupBy(board);    
 
 
     query.limit(pageRequestDTO.getLimit());
@@ -63,7 +68,13 @@ public class BoardSearchImpl implements BoardSearch {
     JPQLQuery<BoardListDTO> dtoQuery = query.select(
       Projections.bean(
       BoardListDTO.class, 
-           board.bno, board.title,board.writer, board.regDate, board.viewCnt ));
+           board.bno, 
+           board.title,
+           board.writer, 
+           board.regDate, 
+           board.viewCnt,
+           reply.rno.count().as("replyCnt")
+            ));
 
     long count = dtoQuery.fetchCount();
     

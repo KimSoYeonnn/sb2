@@ -10,7 +10,32 @@
         <h5 class="card-title">카드 제목</h5>
         <p class="card-text">이것은 부트스트랩 카드를 사용하는 예제입니다.</p>
 
-        [[${data}]]
+        <table class="table table-hover">
+          <thead class="table-light">
+              <tr>
+                  <th>#</th>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>등록일</th>
+                  <th>조회수</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr th:each="board : ${data.dtoList}">
+                  <td>[[${board.bno}]]</td>
+                  <td>
+                    <a th:href="'/board/read/' + ${board.bno} + ${requestDTO.pageLink}">
+                      [[${board.title}]] 
+                    </a>
+                    <b> [ [[${board.replyCnt}]] ]</b></td>
+                  <td>[[${board.writer}]]</td>
+                  <td>[[${board.regDate}]]</td>
+                  <td>[[${board.viewCnt}]]</td>
+              </tr>
+          </tbody>
+        </table>
+
+        
 
         <div>
             <ul class="pagination">
