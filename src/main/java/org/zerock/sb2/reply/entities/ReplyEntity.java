@@ -10,6 +10,7 @@ import org.zerock.sb2.board.entities.BoardEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +27,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "tbl_reply", indexes = { @Index(name="idx_board", columnList = "board_bno") })
 @Getter
-@ToString
+@ToString(exclude = {"board"})
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,7 +41,7 @@ public class ReplyEntity {
 
     private String replyer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private BoardEntity board;
 
     @CreatedDate
