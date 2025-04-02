@@ -70,11 +70,12 @@ public class BoardController {
 
           rttr.addFlashAttribute("errors", bindingResult.getAllErrors());
 
-        });
-        
+        });       
 
         return "redirect:/board/register";
-      }
+      }//end if
+
+      service.saveBoard(dto);
 
       return "redirect:/board/list";
     }
