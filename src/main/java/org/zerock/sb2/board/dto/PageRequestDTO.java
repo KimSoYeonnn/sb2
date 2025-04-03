@@ -2,6 +2,8 @@ package org.zerock.sb2.board.dto;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.ToString;
 

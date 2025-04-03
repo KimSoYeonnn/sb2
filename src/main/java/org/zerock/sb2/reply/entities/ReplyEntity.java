@@ -51,4 +51,5 @@ public class ReplyEntity {
     @LastModifiedDate
     @Column(name ="moddate" )
     protected LocalDateTime modDate;
+
 }

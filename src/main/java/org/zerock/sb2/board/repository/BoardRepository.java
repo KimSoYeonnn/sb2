@@ -10,8 +10,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>, Board
     
     //dto로 바로 만들고 싶다
     // bno, title, content, writer, delFag, regDate, modDate
-    // @Query("select new org.zerock.sb2.board.dto.BoardReadDTO(b.bno, b.title, b.writer, b.delFlag, b.viewCnt, b.regDate, b.modDate)  " +
-    // " from BoardEntity b where b.bno = :bno")
-    // BoardReadDTO selectOne( @Param("bno") Long bno);
+    @Query("select new org.zerock.sb2.board.dto.BoardReadDTO(b.bno, b.title, b.content, b.writer, b.delFlag, b.viewCnt, b.regDate, b.modDate)  " +
+    " from BoardEntity b where b.bno = :bno")
+    BoardReadDTO selectOne( @Param("bno") Long bno);
 
 }
